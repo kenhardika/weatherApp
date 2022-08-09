@@ -67,10 +67,9 @@ function inputCityWeather(city) {
         .catch((mes)=> console.log(mes));
 }
 function userSubmitCity(){
-    const submit = document.getElementById('submitCity');
-    submit.addEventListener('click', (e)=>{ 
+    document.addEventListener('submit', (e)=>{ 
+        submitEvent();
         e.preventDefault();
-        submitEvent(); 
     });
 }
 
@@ -82,7 +81,6 @@ function submitEvent(){
     const inputCity = document.querySelector('.inputCity');
     console.log(inputCity.value);
     inputCityWeather(inputCity.value);
-
     clearInput(inputCity);
 }
 
