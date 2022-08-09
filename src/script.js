@@ -55,12 +55,35 @@ async function showWeather(city){
     //console.log(weatherForecast)
 }
 
-showWeather('lokataralo')
-.then((val)=> {
-    console.log('city: ' + val.name)
-    console.log('temp: '+ val.temp + '°C')
-    console.log('description: ' + val.desc)
-    console.log('cloud percentage: '+ val.cloud + '%')
-    console.log('wind speed: '+ val.speed + ' kph')
-    })
-.catch((mes)=> console.log(mes));
+function inputCityWeather(city) {
+   showWeather(city)
+        .then((val)=> {
+            console.log('city: ' + val.name)
+            console.log('temp: '+ val.temp + '°C')
+            console.log('description: ' + val.desc)
+            console.log('cloud percentage: '+ val.cloud + '%')
+            console.log('wind speed: '+ val.speed + ' kph')
+            })
+        .catch((mes)=> console.log(mes));
+}
+function userSubmitCity(){
+    const submit = document.getElementById('submitCity');
+    submit.addEventListener('click', (e)=>{ 
+        e.preventDefault();
+        submitEvent(); 
+    });
+}
+
+function clearInput(input){
+   return input.value = null;
+}
+
+function submitEvent(){
+    const inputCity = document.querySelector('.inputCity');
+    console.log(inputCity.value);
+    inputCityWeather(inputCity.value);
+
+    clearInput(inputCity);
+}
+
+userSubmitCity()
