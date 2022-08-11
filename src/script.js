@@ -33,7 +33,7 @@ async function showWeather(city){
     let weatherCity = await getWeather(city);
     let weatherForecast = await getForecast(city);
     try { 
-        console.log(weatherCity)
+       // console.log(weatherCity)
         // console.log(weatherCity.weather[0].description);
             const { 
                 clouds:{ all:cloud }, name, main:{temp, humidity}, wind:{speed} 
@@ -57,7 +57,7 @@ async function showWeather(city){
 }
 
 function displayToDOM(val){
-    
+    console.log(val);
 }
 
 function inputCityWeather(city) {
@@ -69,7 +69,7 @@ function inputCityWeather(city) {
             console.log('description: ' + val.desc)
             console.log('cloud percentage: '+ val.cloud + '%')
             console.log('wind speed: '+ val.speed + ' kph')
-            // displayToDOM(val);
+            displayToDOM(val);
             })
         .catch((mes)=> console.log(mes));
 }
