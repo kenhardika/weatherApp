@@ -33,18 +33,19 @@ async function showWeather(city){
     let weatherCity = await getWeather(city);
     let weatherForecast = await getForecast(city);
     try { 
-       // console.log(weatherCity)
+       console.log(weatherCity)
         // console.log(weatherCity.weather[0].description);
             const { 
-                clouds:{ all:cloud }, name, 
+                clouds:{ all:cloud }, name, sys:{country},
                 main:{temp, humidity}, wind:{speed} 
             } = weatherCity;
             const desc = weatherCity.weather[0].description;
             
             return{
-                name, 
+                name,
+                country, 
                 cloud, 
-                temp,
+                temp: Math.round(temp),
                 humidity, 
                 desc,
                 speed
@@ -54,7 +55,25 @@ async function showWeather(city){
         //console.log(weatherCity.message + 'error code: '+ weatherCity.cod);
         throw new Error(weatherCity.message); 
     }
-    //console.log(weatherForecast)
+}
+
+function toggleDisplayOnOff(selector){
+    const layer = document.querySelector(selector);
+    if (layer.classList.contains('active')){
+        layer.classList.remove('active');
+    }
+    else{
+        layer.classList.add('active');
+    }
+}
+
+function toggleDisplayOn(selector){
+    const layer = document.querySelector(selector);
+    layer.classList.add('active');
+}
+function toggleDisplayOff(selector){
+    const layer = document.querySelector(selector);
+    layer.classList.remove('active');
 }
 
 function displayToDOM(val){
@@ -62,32 +81,34 @@ function displayToDOM(val){
     console.log(displayLayers);
     console.log(val);
     displayLayers.forEach((layer)=>{
-        const arrays = ['name', 'temp', 'humidity', 'desc', 'cloud', 'speed'];
+        const arrays = ['name', 'country', 'temp', 'humidity', 'desc', 'cloud', 'speed'];
         arrays.forEach((array)=> {
             if(layer.classList.contains(array)){
                 layer.textContent='';
                 layer.textContent = val[array];
-                // console.log(val['name']);
-                // console.log(val.constructor.name);
             }
         })
         // layer.textContent= val[];
     })
 }
 
-function inputCityWeather(city) {
-   showWeather(city)
+function inputCityWeather(city, layer) {
+    
+    showWeather(city)
         .then((val)=> {
-            console.log('city: ' + val.name)
-            console.log('temp: '+ val.temp + '°C')
-            console.log('humidity: ' + val.humidity + '%')
-            console.log('description: ' + val.desc)
-            console.log('cloud percentage: '+ val.cloud + '%')
-            console.log('wind speed: '+ val.speed + ' kph')
+            toggleDisplayOff('.loading-card');
+            // console.log('city: ' + val.name)
+            // console.log('temp: '+ val.temp + '°C')
+            // console.log('humidity: ' + val.humidity + '%')
+            // console.log('description: ' + val.desc)
+            // console.log('cloud percentage: '+ val.cloud + '%')
+            // console.log('wind speed: '+ val.speed + ' kph')
             displayToDOM(val);
+            toggleDisplayOnOff('.weather-card');
             })
         .catch((mes)=> console.log(mes));
 }
+
 function userSubmitCity(){
     document.addEventListener('submit', (e)=>{ 
         submitEvent();
@@ -100,10 +121,19 @@ function clearInput(input){
 }
 
 function submitEvent(){
+    const layer = document.querySelector('.weather-card');
     const inputCity = document.querySelector('.inputCity');
     console.log(inputCity.value);
-    inputCityWeather(inputCity.value);
+
+    inputCityWeather(inputCity.value, layer);
     clearInput(inputCity);
+    
+    if(layer.classList.contains('active')){
+        toggleDisplayOnOff('.weather-card');
+    }
+    if (!layer.classList.contains('active')){
+        toggleDisplayOn('.loading-card');
+    }
 }
 
 userSubmitCity()
