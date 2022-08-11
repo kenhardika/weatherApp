@@ -36,7 +36,8 @@ async function showWeather(city){
        // console.log(weatherCity)
         // console.log(weatherCity.weather[0].description);
             const { 
-                clouds:{ all:cloud }, name, main:{temp, humidity}, wind:{speed} 
+                clouds:{ all:cloud }, name, 
+                main:{temp, humidity}, wind:{speed} 
             } = weatherCity;
             const desc = weatherCity.weather[0].description;
             
@@ -57,7 +58,21 @@ async function showWeather(city){
 }
 
 function displayToDOM(val){
+    const displayLayers = document.querySelectorAll('[data="display"]');
+    console.log(displayLayers);
     console.log(val);
+    displayLayers.forEach((layer)=>{
+        const arrays = ['name', 'temp', 'humidity', 'desc', 'cloud', 'speed'];
+        arrays.forEach((array)=> {
+            if(layer.classList.contains(array)){
+                layer.textContent='';
+                layer.textContent = val[array];
+                // console.log(val['name']);
+                // console.log(val.constructor.name);
+            }
+        })
+        // layer.textContent= val[];
+    })
 }
 
 function inputCityWeather(city) {
