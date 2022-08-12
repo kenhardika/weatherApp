@@ -62,6 +62,7 @@ main{
     background-color: #abc8e1;
     width: 60px;
     height: 3vh;
+    outline: none;
 }
 .searchbar button:hover{
     background-color: #9cb6cc;
@@ -71,32 +72,38 @@ main{
     transform: translateY(2px);
 }
 
-.loading-card{
+.loading-card, .loading-error{
+    position: absolute;
     display: flex;
-    width: fit-content;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
+    top: 50%;
+    bottom: 50%;
+    width: 200px;
+    height: 80px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 20px;
+    text-align: center;
     opacity: 0;
     transition: opacity 0.3s;
 }
-.loading-card{
-    position: absolute;
-    
-    top: 50%;
-    bottom: 50%;
-
-
-    width: 200px;
-    height: 80px;
-}
-.loading-card.active{
+.loading-card.active, .loading-error.active{
     opacity: 1;
     transition: opacity 0.3s;
 }
-
-.loading-card a{
+.loading-animation{
+    display: flex;
+}
+.loading-animation img{
     width: 50px;
     height: 50px;
+    animation: rotate 1s linear infinite; 
 }
+@keyframes rotate{
+    to{ transform: rotate(360deg); }
+  }
+  
 
 .weather-card{
     /* top: 40%;

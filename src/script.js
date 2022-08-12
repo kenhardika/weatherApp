@@ -1,12 +1,3 @@
-//http://api.openweathermap.org/data/2.5/weather?q=London&APPID=a13d8edf32d7b9d01229e1749c07fcdc
-//`http://api.openweathermap.org/data/2.5/forecast?lat=-6.8722&lon=107.5425&appid=a13d8edf32d7b9d01229e1749c07fcdc`
-
-
-
-// weather now use `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=a13d8edf32d7b9d01229e1749c07fcdc`;
-// forecast use `http://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=a13d8edf32d7b9d01229e1749c07fcdc`
-
-
 async function getWeather(city){
     try{
         let weatherAPI = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=a13d8edf32d7b9d01229e1749c07fcdc`);
@@ -14,7 +5,6 @@ async function getWeather(city){
         return responseAPI
     }
     catch{
-        // console.log('error get weather')
         throw new Error('error weather not found!')
     }
 }
@@ -29,12 +19,12 @@ async function getForecast(city){
         throw new Error('error weather forecast not found!')
     }
 }
+
 async function showWeather(city){
     let weatherCity = await getWeather(city);
     let weatherForecast = await getForecast(city);
     try { 
        console.log(weatherCity)
-        // console.log(weatherCity.weather[0].description);
             const { 
                 clouds:{ all:cloud }, name, sys:{country},
                 main:{temp, humidity}, wind:{speed} 
@@ -52,9 +42,9 @@ async function showWeather(city){
             }
         }
     catch{
-        const layer = document.querySelector('.loading-card');
-        layer.textContent = `Error${weatherCity.cod}(${weatherCity.message}) please check your input again`;
-        //console.log(weatherCity.message + 'error code: '+ weatherCity.cod);
+        toggleDisplayOnOff('.loading-card');
+        loadingError(weatherCity.message, weatherCity.cod);
+        toggleDisplayOnOff('.loading-error');
         throw new Error(weatherCity.message); 
     }
 }
@@ -97,46 +87,55 @@ function inputCityWeather(city) {
             toggleDisplayOff('.loading-card');
             displayToDOM(val);
             toggleDisplayOnOff('.weather-card');
-            })
-        .catch((mes)=> {
-            console.log(mes);      
-        });
+            });
 }
 
 function userSubmitCity(){
     document.addEventListener('submit', (e)=>{ 
-        submitEvent();
         e.preventDefault();
+        submitEvent();
     });
+}
+
+function loadingDisplay(text){
+    const layerCard = document.querySelector('.loading-card');
+    const layerAnim = document.querySelector('.loading-animation');
+    const image = document.createElement('img');
+    const para = document.createElement('p');
+    para.className = 'loading-card-text';
+    para.textContent = text;
+    image.className='loading-animation-img';
+    image.src=`./img/loading.png`;
+    layerAnim.append(image);
+    layerCard.append(para);
+}
+
+loadingDisplay('Please Wait');
+
+function loadingError(msg, code){
+    const layer = document.querySelector('.loading-error');
+    layer.textContent = `Error${code}(${msg}) please check your input again`;
 }
 
 function clearInput(input){
    return input.value = null;
-}
-function loadingNotice(text){
-    const layer = document.querySelector('.loading-card');
-    // const loading = document.querySelector('.loading-animation');
-    // loading.className='loadingAnimate';
-    // loading.src=`./img/loading.png`; 
-
-    layer.textContent = text;
 }
 
 function submitEvent(){
     const layer = document.querySelector('.weather-card');
     const inputCity = document.querySelector('.inputCity');
     console.log(inputCity.value);
-
-    loadingNotice('Please Wait Ya')
+    toggleDisplayOff('.loading-error');
 
     inputCityWeather(inputCity.value);
     clearInput(inputCity);
-    
+
     if(layer.classList.contains('active')){
         toggleDisplayOnOff('.weather-card');
     }
     if (!layer.classList.contains('active')){
         toggleDisplayOn('.loading-card');
+        // toggleDisplayOn('.loading-animation');
     }
 }
 
