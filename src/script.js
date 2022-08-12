@@ -70,6 +70,7 @@ function toggleDisplayOff(selector){
 
 function displayToDOM(val){
     const displayLayers = document.querySelectorAll('[data="display"]');
+    const displayIcon = document.querySelector('.display.icon img');
     displayLayers.forEach((layer)=>{
         const arrays = ['name', 'country', 'temp', 'humidity', 'desc', 'cloud', 'speed'];
         arrays.forEach((array)=> {
@@ -79,6 +80,48 @@ function displayToDOM(val){
             }
         })
     })
+    let desc = val.desc;
+    switch (desc){
+        case 'clear sky':
+            displayIcon.src = './img/sun.svg';
+            break;
+        case 'overcast clouds':
+            displayIcon.src = './img/cloud-sun.svg';
+            break;
+        case 'few clouds':
+            displayIcon.src = './img/clouds.svg';
+            break;
+        case 'broken clouds':
+            displayIcon.src = './img/cloud.svg';
+            break;        
+        case 'scattered clouds':
+            displayIcon.src = './img/clouds.svg';
+            break;        
+        case 'thunderstorm':
+            displayIcon.src = './img/cloud-lightning-rain.svg';
+            break;           
+        case 'light rain':
+            displayIcon.src = './img/cloud-drizzle.svg';
+            break;        
+        case 'moderate rain':
+            displayIcon.src = './img/cloud-rain.svg';
+            break;
+        case 'heavy rain':
+            displayIcon.src = './img/cloud-rain-heavy.svg';
+            break;
+        case 'mist':
+            displayIcon.src = './img/cloud-haze.svg';
+            break;
+        case 'snow':
+            displayIcon.src = './img/cloud-snow.svg';
+            break;
+        case 'light intensity shower rain':
+            displayIcon.src = './img/cloud-drizzle.svg';
+            break;        
+        default:
+            displayIcon.textContent = 'weather undetected';
+    }
+
 }
 
 function inputCityWeather(city) {
@@ -110,7 +153,6 @@ function loadingDisplay(text){
     layerCard.append(para);
 }
 
-loadingDisplay('Please Wait');
 
 function loadingError(msg, code){
     const layer = document.querySelector('.loading-error');
@@ -135,8 +177,8 @@ function submitEvent(){
     }
     if (!layer.classList.contains('active')){
         toggleDisplayOn('.loading-card');
-        // toggleDisplayOn('.loading-animation');
     }
 }
 
-userSubmitCity()
+userSubmitCity();
+loadingDisplay('Please Wait');
