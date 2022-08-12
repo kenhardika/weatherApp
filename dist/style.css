@@ -38,7 +38,7 @@ main{
 .searchbar{
    display: flex;
    flex-direction: row;
-   width: 25vw;
+   width: 80%;
    gap: 20px;
    justify-content: center;
 }
@@ -56,6 +56,21 @@ main{
     outline: none;
 }
 
+.searchbar button{
+    border: 1px solid white;
+    border-radius: 20px;
+    background-color: #abc8e1;
+    width: 60px;
+    height: 3vh;
+}
+.searchbar button:hover{
+    background-color: #9cb6cc;
+}
+
+.searchbar button:active{
+    transform: translateY(2px);
+}
+
 .loading-card{
     display: flex;
     width: fit-content;
@@ -63,10 +78,26 @@ main{
     opacity: 0;
     transition: opacity 0.3s;
 }
+.loading-card{
+    position: absolute;
+    
+    top: 50%;
+    bottom: 50%;
+
+
+    width: 200px;
+    height: 80px;
+}
 .loading-card.active{
     opacity: 1;
     transition: opacity 0.3s;
 }
+
+.loading-card a{
+    width: 50px;
+    height: 50px;
+}
+
 .weather-card{
     /* top: 40%;
     left: 40%;

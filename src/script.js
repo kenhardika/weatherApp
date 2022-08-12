@@ -52,6 +52,8 @@ async function showWeather(city){
             }
         }
     catch{
+        const layer = document.querySelector('.loading-card');
+        layer.textContent = `Error${weatherCity.cod}(${weatherCity.message}) please check your input again`;
         //console.log(weatherCity.message + 'error code: '+ weatherCity.cod);
         throw new Error(weatherCity.message); 
     }
@@ -78,8 +80,6 @@ function toggleDisplayOff(selector){
 
 function displayToDOM(val){
     const displayLayers = document.querySelectorAll('[data="display"]');
-    console.log(displayLayers);
-    console.log(val);
     displayLayers.forEach((layer)=>{
         const arrays = ['name', 'country', 'temp', 'humidity', 'desc', 'cloud', 'speed'];
         arrays.forEach((array)=> {
@@ -88,25 +88,19 @@ function displayToDOM(val){
                 layer.textContent = val[array];
             }
         })
-        // layer.textContent= val[];
     })
 }
 
-function inputCityWeather(city, layer) {
-    
+function inputCityWeather(city) {
     showWeather(city)
         .then((val)=> {
             toggleDisplayOff('.loading-card');
-            // console.log('city: ' + val.name)
-            // console.log('temp: '+ val.temp + '°C')
-            // console.log('humidity: ' + val.humidity + '%')
-            // console.log('description: ' + val.desc)
-            // console.log('cloud percentage: '+ val.cloud + '%')
-            // console.log('wind speed: '+ val.speed + ' kph')
             displayToDOM(val);
             toggleDisplayOnOff('.weather-card');
             })
-        .catch((mes)=> console.log(mes));
+        .catch((mes)=> {
+            console.log(mes);      
+        });
 }
 
 function userSubmitCity(){
@@ -119,13 +113,23 @@ function userSubmitCity(){
 function clearInput(input){
    return input.value = null;
 }
+function loadingNotice(text){
+    const layer = document.querySelector('.loading-card');
+    // const loading = document.querySelector('.loading-animation');
+    // loading.className='loadingAnimate';
+    // loading.src=`./img/loading.png`; 
+
+    layer.textContent = text;
+}
 
 function submitEvent(){
     const layer = document.querySelector('.weather-card');
     const inputCity = document.querySelector('.inputCity');
     console.log(inputCity.value);
 
-    inputCityWeather(inputCity.value, layer);
+    loadingNotice('Please Wait Ya')
+
+    inputCityWeather(inputCity.value);
     clearInput(inputCity);
     
     if(layer.classList.contains('active')){
