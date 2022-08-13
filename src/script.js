@@ -3,7 +3,7 @@ import updateWeatherIcon from './weatherConditions';
 /* eslint-disable no-param-reassign */
 async function getWeather(city) {
   try {
-    const weatherAPI = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=a13d8edf32d7b9d01229e1749c07fcdc`, { mode: 'cors' });
+    const weatherAPI = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=a13d8edf32d7b9d01229e1749c07fcdc`, { mode: 'cors' });
     const responseAPI = await weatherAPI.json();
     return responseAPI;
   } catch {
