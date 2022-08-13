@@ -44,6 +44,9 @@ function updateWeatherIcon(val, target) { // target = '.display.icon img'
     case 'heavy intensity rain':
       displayIcon.src = './img/cloud-rain-heavy.svg';
       break;
+    case 'heavy intensity shower rain':
+      displayIcon.src = './img/cloud-rain-heavy.svg';
+      break;
     case 'haze':
       displayIcon.src = './img/cloud-haze.svg';
       break;
