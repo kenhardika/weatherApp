@@ -1,3 +1,5 @@
+import updateWeatherIcon from './weatherConditions';
+
 /* eslint-disable no-param-reassign */
 async function getWeather(city) {
   try {
@@ -75,9 +77,8 @@ async function showWeather(city) {
   }
 }
 
-function displayToDOM(val) {
-  const displayLayers = document.querySelectorAll('[data="display"]');
-  const displayIcon = document.querySelector('.display.icon img');
+function updateWeatherText(val, target) { // '[data="display"]'
+  const displayLayers = document.querySelectorAll(target);
   displayLayers.forEach((layer) => {
     const arrays = [
       'name',
@@ -95,74 +96,33 @@ function displayToDOM(val) {
       }
     });
   });
-  const { desc } = val;
-  switch (desc) {
-    case 'clear sky':
-      displayIcon.src = './img/sun.svg';
-      break;
-    case 'overcast clouds':
-      displayIcon.src = './img/cloud-sun.svg';
-      break;
-    case 'few clouds':
-      displayIcon.src = './img/clouds.svg';
-      break;
-    case 'broken clouds':
-      displayIcon.src = './img/cloud.svg';
-      break;
-    case 'scattered clouds':
-      displayIcon.src = './img/clouds.svg';
-      break;
-    case 'thunderstorm':
-      displayIcon.src = './img/cloud-lightning-rain.svg';
-      break;
-    case 'light rain':
-      displayIcon.src = './img/cloud-drizzle.svg';
-      break;
-    case 'moderate rain':
-      displayIcon.src = './img/cloud-rain.svg';
-      break;
-    case 'heavy rain':
-      displayIcon.src = './img/cloud-rain-heavy.svg';
-      break;
-    case 'mist':
-      displayIcon.src = './img/cloud-haze.svg';
-      break;
-    case 'snow':
-      displayIcon.src = './img/cloud-snow.svg';
-      break;
-    case 'light intensity shower rain':
-      displayIcon.src = './img/cloud-drizzle.svg';
-      break;
-    case 'heavy intensity rain':
-      displayIcon.src = './img/cloud-rain-heavy.svg';
-      break;
-    default:
-      displayIcon.textContent = 'weather undetected';
-  }
 }
 
 function inputCityWeather(city) {
   showWeather(city).then((val) => {
     toggleDisplayOff('.loading-card');
-    displayToDOM(val);
+    updateWeatherText(val, '[data="display"]');
+    updateWeatherIcon(val, '.display.icon img');
     toggleDisplayOnOff('.weather-card');
   });
 }
 
-function submitEvent() {
-  const layer = document.querySelector('.weather-card');
-  const inputCity = document.querySelector('.inputCity');
-  toggleDisplayOff('.loading-error');
-
-  inputCityWeather(inputCity.value);
-  inputCity.value = null;
-
+function checkIfWeatherCardActive(target) { // '.weather-card'
+  const layer = document.querySelector(target);
   if (layer.classList.contains('active')) {
     toggleDisplayOnOff('.weather-card');
   }
   if (!layer.classList.contains('active')) {
     toggleDisplayOn('.loading-card');
   }
+}
+
+function submitEvent() {
+  const inputCity = document.querySelector('.inputCity');
+  inputCityWeather(inputCity.value);
+  inputCity.value = null;
+  toggleDisplayOff('.loading-error');
+  checkIfWeatherCardActive('.weather-card');
 }
 
 function userSubmitCity() {
